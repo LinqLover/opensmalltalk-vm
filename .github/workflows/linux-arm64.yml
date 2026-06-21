@@ -63,7 +63,7 @@ jobs:
     env:
       ARCH: ${{ matrix.arch }}
       FLAVOR: ${{ matrix.flavor }}
-      PROCESSOR_PLUGINS: "bochsx64 bochsx86"
+      PROCESSOR_PLUGINS: "bochsx64,bochsx86"
       MODE: ${{ matrix.mode }}
       HEARTBEAT: threaded # itimer not supported
     steps:
