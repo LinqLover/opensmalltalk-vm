@@ -5,7 +5,11 @@ name: Extra Monthly Builds (Linux Classic)
 on:
   push:
     paths:
+      # This workflow spec and its support scripts
       - '.github/workflows/extra-linux-classic.yml'
+      - 'scripts/ci/*linux_x86.sh'
+      - 'scripts/ci/*build.sh'
+      - 'deploy/**'
   schedule:
     - cron: '0 0 1 * *' # Build on the 1st of every month at midnight
   workflow_dispatch:
