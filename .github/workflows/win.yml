@@ -13,6 +13,8 @@ on:
       - '*src/**' # Generated VMMaker sources (incl. plugins)
       - 'platforms/Cross/**'
       - 'platforms/win32/**'
+      - 'processors/IA32/**' # Bochs plugins
+      - 'processors/ARM/**' # GDBArm plugins
       # Skip changes in documentation artifacts
       - '!**.md'
       - '!**HowToBuild'
@@ -30,6 +32,8 @@ on:
       - '*src/**' # Generated VMMaker sources (incl. plugins)
       - 'platforms/Cross/**'
       - 'platforms/win32/**'
+      - 'processors/IA32/**' # Bochs plugins
+      - 'processors/ARM/**' # GDBArm plugins
       # Skip changes in documentation artifacts
       - '!**.md'
       - '!**HowToBuild'
