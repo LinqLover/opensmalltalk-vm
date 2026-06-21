@@ -1,9 +1,13 @@
 # Copied, perhaps edited, from ../../src/examplePlugins.ext
 EXTERNAL_PLUGINS = \
 B3DAcceleratorPlugin \
+BochsIA32Plugin \
+BochsX64Plugin \
 CameraPlugin \
 ClipboardExtendedPlugin \
 CroquetPlugin \
+GdbARMPlugin \
+GdbARMv8Plugin \
 Mpeg3Plugin \
 SqueakFFIPrims \
 Squeak3D \

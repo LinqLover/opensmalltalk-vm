@@ -12,6 +12,7 @@ set -e
 # - ARCH_DETAILS (optional - e.g., "ubuntu-20.04")
 # - ARCH_ARM (only set for ARM builds in docker container)
 # - FLAVOR (e.g., "squeak.cog.spur")
+# - PROCESSOR_PLUGINS (e.g., ""/unset - none (default), "bochsx64,gdbarm64", or "*" - all)
 # - RUNNER_OS (i.e., "Linux", "macOS", "Windows")
 # - HEARTBEAT (i.e., "threaded" or "itimer"; !! Linux only !!)
 #
@@ -52,6 +53,37 @@ skip_BochsPlugins() {
     sed -i 's/Bochs.* //g' plugins.int
 }
 
+build_processor_plugins() {
+    PROCESSORS_BUILD_PATH="${BUILD_PATH}/../.."
+    pushd "${PROCESSORS_BUILD_PATH}"
+
+    if [[ "${PROCESSOR_PLUGINS}" == "*" ]]; then
+        ALL_PROCESSOR_PLUGINS="bochsx64,bochsx32,gdbarm64,gdbarm32"
+        PROCESSOR_PLUGINS=$(
+            IFS=,
+            for plugin in $ALL_PROCESSOR_PLUGINS; do
+                [[ -e "$plugin" ]] && printf '%s,' "$plugin"
+            done | sed 's/,$//'
+        )
+    fi
+
+    if [[ ! -z "${PROCESSOR_PLUGINS}" ]]; then
+        IFS=',' read -ra PLUGINS <<< "${PROCESSOR_PLUGINS}"
+        for plugin in "${PLUGINS[@]}"; do
+            PROCESSOR_BUILD_PATH="${plugin}"
+
+            pushd "${PROCESSOR_BUILD_PATH}"
+            echo "::group::Building ${PROCESSOR_BUILD_PATH}..."
+            bash -e ./conf.COG && bash -e ./makeem
+            echo "::endgroup::"
+            popd
+        done
+    fi
+
+    popd
+}
+    
+
 export_variable() {
     local var_name=$1
     local var_value=$2
@@ -87,6 +119,8 @@ build_Linux() {
         ASSET_NAME="${ASSET_NAME}_itimer"
     fi
 
+    build_processor_plugins
+
     pushd "${BUILD_PATH}"
 
     echo "::group::Building ${BUILD_PATH}..."
@@ -101,6 +135,8 @@ build_Linux() {
 
 build_macOS() {
     check_buildPath
+
+    build_processor_plugins
 
     pushd "${BUILD_PATH}"
 
@@ -127,10 +163,12 @@ build_macOS() {
 
 build_Windows() {
     check_buildPath
+
+    build_processor_plugins
+
     pushd "${BUILD_PATH}"
 
     echo "::group::Building ${BUILD_PATH}..."
-    skip_BochsPlugins
     if [[ "${MODE}" == "debug" ]]; then
         bash -e ./mvm -d -- TOOLPREFIX='' || exit 1
     elif [[ "${MODE}" == "assert" ]]; then

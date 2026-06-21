@@ -64,6 +64,7 @@ jobs:
       ARCH: ${{ matrix.arch }}
       ARCH_DETAILS: ${{ matrix.os.name }}
       FLAVOR: ${{ matrix.flavor }}
+      PROCESSOR_PLUGINS: "*"
       MODE: ${{ matrix.mode }}
       DEBIAN_FRONTEND: noninteractive  # for container
     steps:

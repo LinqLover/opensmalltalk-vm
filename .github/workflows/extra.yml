@@ -34,6 +34,7 @@ jobs:
     env:
       ARCH: ${{ matrix.arch.name }}
       FLAVOR: ${{ matrix.flavor }}
+      PROCESSOR_PLUGINS: "*"
       MODE: fast # no assert or debug here
       HEARTBEAT: threaded # linux only; no itimer here
     steps:

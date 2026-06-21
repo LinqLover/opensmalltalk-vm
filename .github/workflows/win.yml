@@ -63,6 +63,7 @@ jobs:
     env:
       ARCH: ${{ matrix.arch }}
       FLAVOR: ${{ matrix.flavor }}
+      PROCESSOR_PLUGINS: "*"
       MODE: ${{ matrix.mode }}
     steps:
       - name: Checkout files
