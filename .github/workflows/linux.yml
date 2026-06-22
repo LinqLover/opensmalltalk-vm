@@ -89,7 +89,7 @@ jobs:
     env:
       ARCH: ${{ matrix.arch }}
       FLAVOR: ${{ matrix.flavor }}
-      PROCESSOR_PLUGINS: "*"
+      PROCESSOR_PLUGINS: ${{ matrix.arch == 'linux32x86' && 'bochsx86,gdbarm32' || '*' }}
       MODE: ${{ matrix.mode }}
     steps:
       - name: Checkout files
