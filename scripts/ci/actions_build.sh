@@ -54,7 +54,9 @@ skip_BochsPlugins() {
 }
 
 build_processor_plugins() {
-    PROCESSORS_BUILD_PATH="${BUILD_PATH}/../.."
+    echo "DEBUG: build_processor_plugins: PROCESSOR_PLUGINS=${PROCESSOR_PLUGINS} pwd=$(pwd)"
+
+    PROCESSORS_BUILD_PATH="${BUILD_PATH}/.."
     pushd "${PROCESSORS_BUILD_PATH}"
 
     if [[ "${PROCESSOR_PLUGINS}" == "*" ]]; then
@@ -67,18 +69,18 @@ build_processor_plugins() {
         )
     fi
 
-    if [[ ! -z "${PROCESSOR_PLUGINS}" ]]; then
-        IFS=',' read -ra PLUGINS <<< "${PROCESSOR_PLUGINS}"
-        for plugin in "${PLUGINS[@]}"; do
-            PROCESSOR_BUILD_PATH="${plugin}"
+    echo "DEBUG: PROCESSOR_PLUGINS=${PROCESSOR_PLUGINS}"
 
-            pushd "${PROCESSOR_BUILD_PATH}"
-            echo "::group::Building ${PROCESSOR_BUILD_PATH}..."
-            bash -e ./conf.COG && bash -e ./makeem
-            echo "::endgroup::"
-            popd
-        done
-    fi
+    IFS=',' read -ra PLUGINS <<< "${PROCESSOR_PLUGINS}"
+    for plugin in "${PLUGINS[@]}"; do
+        PROCESSOR_BUILD_PATH="${plugin}"
+
+        pushd "${PROCESSOR_BUILD_PATH}"
+        echo "::group::Building ${PROCESSOR_BUILD_PATH}..."
+        bash -e ./conf.COG && bash -e ./makeem
+        echo "::endgroup::"
+        popd
+    done
 
     popd
 }
@@ -105,6 +107,8 @@ build_Linux() {
     (cd platforms/unix/config/ && make configure)
     echo '::endgroup::'
 
+    build_processor_plugins
+
     BUILD_PATH="${BUILD_PATH}/build"
     if [[ "${MODE}" == "debug" ]]; then
         BUILD_PATH="${BUILD_PATH}.debug"
@@ -118,8 +122,6 @@ build_Linux() {
         BUILD_PATH="${BUILD_PATH}.itimerheartbeat"
         ASSET_NAME="${ASSET_NAME}_itimer"
     fi
-
-    build_processor_plugins
 
     pushd "${BUILD_PATH}"
 
