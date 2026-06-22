@@ -54,8 +54,6 @@ skip_BochsPlugins() {
 }
 
 build_processor_plugins() {
-    echo "DEBUG: build_processor_plugins: PROCESSOR_PLUGINS=${PROCESSOR_PLUGINS} pwd=$(pwd)"
-
     PROCESSORS_BUILD_PATH="${BUILD_PATH}/.."
     pushd "${PROCESSORS_BUILD_PATH}"
 
@@ -68,8 +66,6 @@ build_processor_plugins() {
             done | sed 's/,$//'
         )
     fi
-
-    echo "DEBUG: PROCESSOR_PLUGINS=${PROCESSOR_PLUGINS}"
 
     IFS=',' read -ra PLUGINS <<< "${PROCESSOR_PLUGINS}"
     for plugin in "${PLUGINS[@]}"; do
