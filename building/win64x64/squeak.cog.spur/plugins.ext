@@ -2,7 +2,7 @@
 EXTERNAL_PLUGINS = \
 B3DAcceleratorPlugin \
 BochsX64Plugin \
-BochsIA32Plugin
+BochsIA32Plugin \
 CameraPlugin \
 FileAttributesPlugin \
 Squeak3D \
