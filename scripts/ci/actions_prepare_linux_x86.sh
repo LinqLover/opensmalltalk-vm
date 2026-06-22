@@ -43,6 +43,7 @@ apt-get install -yq --no-install-suggests --no-install-recommends --allow-unauth
      debhelper \
      devscripts \
      gcc-multilib \
+     g++-multilib `# bochs plugins` \
      automake \
      autoconf \
      libtool \
